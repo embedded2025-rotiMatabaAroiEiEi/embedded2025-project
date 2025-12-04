@@ -101,7 +101,6 @@ int main(void)
   MX_ADC1_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_1);
   HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
   int adcval = 0;
   int max_value = INT16_MIN;
