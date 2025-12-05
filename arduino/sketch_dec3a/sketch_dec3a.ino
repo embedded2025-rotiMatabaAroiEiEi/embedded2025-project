@@ -6,8 +6,8 @@
 #define SECRET      "DM1rKGj4T5mDAWs3nVYQZW5KMSJXC6Ew"
 #define DEVICEID    "60c99d11-739b-4e91-9c99-9d41e68641cb"
 
-const char* ssid = "Dreamjeen_2.4G";  // Wifi name
-const char* password = "dreamjeen179";  // password
+const char* ssid = "";  // Wifi name
+const char* password = "";  // password
 
 const char* mqtt_server = "mqtt.netpie.io";
 const int   mqtt_port   = 1883;
