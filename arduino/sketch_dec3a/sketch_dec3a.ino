@@ -2,12 +2,12 @@
 #include <PubSubClient.h>
 
 //#define APPID       "P418028499295"
-#define KEY         "feqYG9dVpcQGNUiMhxis3n8f9Pwvk3Xs"
-#define SECRET      "g6XqfPVmvi5pe6K4ywMXTJwy5ygWhbhJ"
-#define DEVICEID    "f64f0777-455e-40b6-9bc0-c76f71d5e43b"
+#define KEY         "jmtQaLkFRatAbjNW1MZGrUzEPj9oe5cS"
+#define SECRET      "DM1rKGj4T5mDAWs3nVYQZW5KMSJXC6Ew"
+#define DEVICEID    "60c99d11-739b-4e91-9c99-9d41e68641cb"
 
-const char* ssid = "Test";  // Wifi name
-const char* password = "00000000";  // password
+const char* ssid = "Dreamjeen_2.4G";  // Wifi name
+const char* password = "dreamjeen179";  // password
 
 const char* mqtt_server = "mqtt.netpie.io";
 const int   mqtt_port   = 1883;
@@ -26,6 +26,26 @@ void callback(char* topic, byte* payload, unsigned int length) {
     Serial.print((char)payload[i]);
   }
   Serial.println();
+  String msg = "";
+  for (int i = 0; i < length; i++) {
+    msg += (char)payload[i];
+  }
+  msg.trim(); // remove extra whitespace
+  Serial.println(msg);
+
+  // Convert ON/OFF to 1/0
+  String uartMsg = "0"; // default
+  if (msg == "on") {
+    uartMsg = "o";
+  } else if (msg =="off") {
+    uartMsg = "f";
+  }
+
+  // Send single character to STM32 via UART1
+  Serial1.print(uartMsg);
+  Serial1.flush();
+  Serial.print("Sent to STM32: ");
+  Serial.println(uartMsg);
 }
 
 void connectMQTT() {
@@ -36,7 +56,9 @@ void connectMQTT() {
       Serial.println("connected!");
       
       // Subscribe to a channel
-      client.subscribe("@feed/light");
+      client.subscribe("@shadow/laser/get/accepted");
+      client.subscribe("@shadow/laser/update/accepted");
+      client.subscribe("@msg/laser");
     } else {
       Serial.print(" failed, rc=");
       Serial.print(client.state());
@@ -76,7 +98,7 @@ void loop() {
     Serial.print("Got: ");
     Serial.println(s);
     char msg[2] = { s, '\0' };  
-    client.publish("@feed/light", msg);
+    //client.publish("@feed/light", msg);
   }
 
   client.loop();
